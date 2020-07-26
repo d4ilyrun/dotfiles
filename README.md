@@ -6,7 +6,7 @@ My personal i3 config
 
 ### Dependencies
 
-  > yay -S picom dunst rofi libmpdclient polybar fish-git
+  > yay -S picom dunst rofi libmpdclient polybar fish-git urxvt
 
 ### Installation
 
