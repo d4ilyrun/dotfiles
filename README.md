@@ -34,3 +34,4 @@ i3lock -i /tmp/lockbackground.png
 ## Overview
 
 ![DesktopPreview](Preview.png)
+![LockPreview](LockPreview.png)
