@@ -148,16 +148,19 @@ for_window [title="Desktop — Plasma"] kill; floating enable; b    order none
 #### TOOLS #################
 
 # MEDIA CONTROL
-bindsym XF86MonBrightnessUp exec xbacklight + 20
-bindsym XF86MonBrightnessDown exec xbacklight - 20
-bindsym XF86AudioRaiseVolume exec pactl -- set-sink-volume 0 +10%
-bindsym XF86AudioLowerVolume exec pactl -- set-sink-volume 0 -10%
+bindsym XF86MonBrightnessUp     exec xbacklight + 20
+bindsym XF86MonBrightnessDown   exec xbacklight - 20
+bindsym XF86AudioRaiseVolume    exec pactl -- set-sink-volume 0 +10%
+bindsym XF86AudioLowerVolume    exec pactl -- set-sink-volume 0 -10%
 
 # SCREENSHOT
+bindsym Print           exec scrot -e 'mv $f ~/Images/Screenshots/'
+bindsym $mod+Print      exec scrot -ub -e 'mv $f ~/Images/Screenshots/'  
+bindsym $mod+Shift+s    exec scrot -s -e 'mv $f ~/Images/Screenshots/'
 
 # I3 LOCK
-bindsym $mod+x exec i3lock-fancy -p -t "System Locked Down"
-bindsym $mod+Control+o exec /bin/v3lock
+bindsym $mod+x          exec i3lock-fancy -p -t "System Locked Down"
+bindsym $mod+Control+o  exec /bin/v3lock
 
 # ROFI
 bindsym $mod+d exec rofi -show combi -show-icons
