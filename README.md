@@ -41,7 +41,7 @@ i3lock -i /tmp/lockbackground.png
 ## installing
 
 ```
-git clone 
+git clone git@github.com:d4ilyrun/dotfiles.git 
 cd dotifles
 mkdir ~/Images && mkdir ~/Images/Screenshots ~/Images/Wallpaper
 cp * ~/ && cp -rf .config/* ~/.config
