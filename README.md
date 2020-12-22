@@ -21,7 +21,7 @@ i3 i3-gaps i3lock-fancy picom Alacritty Dunst polybar rofi
 FiraCode Font-Awesome siji-git ttf-unifont IPAPMincho
 ```
 
-## installing
+## Installing
 
 ```
 git clone git@github.com:d4ilyrun/dotfiles.git 
