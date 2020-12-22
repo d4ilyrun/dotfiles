@@ -28,7 +28,10 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""
 " => Settings
 """""""""""""""""""""""""""""""""""""""
+let mapleader = ","			  " Leader key
 set clipboard=unnamedplus
+set number relativenumber		  " Line numbering
+
 
 """"""""""""""""""""""""""""""""""""""
 " => File explorer   
@@ -41,8 +44,6 @@ set clipboard=unnamedplus
 " => Theme
 """""""""""""""""""""""""""""""""""""""
 syntax on
-:set number relativenumber		  " Line numbering
-
 set t_Co=256
 colorscheme sonokai
 
@@ -50,9 +51,11 @@ colorscheme sonokai
 """""""""""""""""""""""""""""""""""""""
 " => statusbar
 """""""""""""""""""""""""""""""""""""""
-let g:airline_theme='minimalist'
+let g:airline_theme = 'sonokai'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+
 
 """""""""""""""""""""""""""""""""""""""
 " => Code sytling
@@ -65,9 +68,14 @@ set expandtab
 """""""""""""""""""""""""""""""""""""""
 " => Keymaps
 """""""""""""""""""""""""""""""""""""""
-:let mapleader = ","			  " Leader key
 
 " edit / reload vim.rc
 nnoremap <Leader>ve :e $MYVIMRC<CR>			" edit
 nnoremap <Leader>vr :source $MYVIMRC<CR>	" reload
 
+" tabs
+nnoremap <C-t><BS> :tabc<CR>    " close tab
+nnoremap <C-t><up> :tabr<CR>    " first tab
+nnoremap <C-t><down> :tabl<CR>  " last tab
+nnoremap <C-t><left> :tabp<CR>  " previous tab
+nnoremap <C-t><right> :tabn<CR> " next tab
