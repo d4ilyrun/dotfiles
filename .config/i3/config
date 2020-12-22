@@ -180,7 +180,7 @@ bindsym $mod+c       exec code
 # STARTUP
 exec --no-startup-id setxkbmap fr
 exec --no-startup-id unclutter --timeout 3
-exec --no-startup-id feh --bg-scale ~/Images/Wallpaper/pink_anime_girl.jpg
+exec --no-startup-id feh --bg-scale "~/Images/Wallpaper/30 - DUgrG9o.jpg"
 
 # RELOAD
 exec_always xrandr --auto --output HDMI-1-0 --above eDP1 --auto

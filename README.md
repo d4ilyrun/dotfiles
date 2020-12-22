@@ -24,13 +24,11 @@ FiraCode Font-Awesome siji-git ttf-unifont IPAPMincho
 ## Installing
 
 ```
-git clone git@github.com:d4ilyrun/dotfiles.git 
-cd dotifles
-mkdir ~/Images && mkdir ~/Images/Screenshots ~/Images/Wallpaper
+git clone git@github.com:d4ilyrun/dotfiles.git && cd dotifles
+mkdir ~/Images && mkdir ~/Images/Screenshots
 cp * ~/ && cp -rf .config/* ~/.config
-cp Scripts/* /bin/
-cp Images/pink_anime_girl.jpg ~/Images/Wallpaper
-
+cp -r Scripts/* /bin/
+cp -r Images/Wallpaper ~/Images/Wallpaper
 ```
 
 ## screenshots
