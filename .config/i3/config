@@ -1,0 +1,186 @@
+#### i3-config ###############
+
+#### GENERAL #################
+
+# MOD KEY
+set $mod Mod4
+
+# APP VARIABLE
+set $browser firefox
+set $term alacritty
+
+# DEFAULT BORDER
+for_window [class="^.*"] border pixel 0
+for_window [title="^.*"] border pixel 0
+
+# GAPS
+gaps inner 8
+gaps outer 0
+smart_borders on
+smart_borders no_gaps
+
+# TERMINAL
+bindsym $mod+Return exec $term
+
+# KILL
+bindsym $mod+Shift+q kill
+
+# RELOAD / RESTART
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+
+#### MOVEMENT ################
+
+# FOCUS
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+focus_follows_mouse no
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# MOVE
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# VERTICAL SPLIT
+bindsym $mod+v split v
+
+# HORIZONTAL SPLIT
+bindsym $mod+h split h
+
+# FULLSCREEN
+bindsym $mod+f fullscreen toggle
+
+# TOGGLE FLOATING
+bindsym $mod+Shift+space floating toggle; $center
+
+
+#### WORKSPACES ##############
+
+# WORKSPACES
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# SWITCH TO WORKSPACE
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# MOVE WINDOW TO WORKSPACE
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+#### COLOR #################
+
+# XRESOURCES
+set_from_resource $fg foreground
+set_from_resource $bg background 
+
+# CLASS                 BORDER  BACK    TEXT    INDICATOR CHILD_BORDER
+client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #ffffff
+
+#### KDE PLASMA + I3 #######
+
+# Plasma compatibility improvements
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+
+for_window [class="yakuake"] floating enable
+for_window [class="systemsettings"] floating enable
+for_window [class="plasmashell"] floating enable;
+for_window [class="Plasma"] floating enable; border none
+for_window [title="plasma-desktop"] floating enable; border no    ne
+for_window [title="win7"] floating enable; border none
+for_window [class="krunner"] floating enable; border none
+for_window [class="Kmix"] floating enable; border none
+for_window [class="Klipper"] floating enable; border none
+for_window [class="Plasmoidviewer"] floating enable; border no    ne
+for_window [class="(?i)*nextcloud*"] floating disable
+for_window [class="plasmashell" window_type="notification"] bo    rder none, move right 700px, move down 450px
+no_focus [class="plasmashell" window_type="notification"]
+ 
+# killig window
+for_window [title="Desktop — Plasma"] kill; floating enable; b    order none
+
+# i3 config
+for_window [title="Desktop — Plasma"] kill; floating enable; b    order none
+
+#### TOOLS #################
+
+# MEDIA CONTROL
+bindsym XF86MonBrightnessUp exec xbacklight + 20
+bindsym XF86MonBrightnessDown exec xbacklight - 20
+bindsym XF86AudioRaiseVolume exec pactl -- set-sink-volume 0 +10%
+bindsym XF86AudioLowerVolume exec pactl -- set-sink-volume 0 -10%
+
+# SCREENSHOT
+
+# I3 LOCK
+bindsym $mod+x exec i3lock-fancy -p -t "System Locked Down"
+bindsym $mod+Control+o exec /bin/v3lock
+
+# ROFI
+bindsym $mod+d exec rofi -show combi -show-icons
+#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+
+#### APP BINDS #################
+
+bindsym $mod+n       exec $browser
+bindsym $mod+Ctrl+n  exec rofi-search "$browser --new-window"
+bindsym $mod+Shift+n exec rofi-web    "$browser --new-window"
+
+bindsym $mod+e       exec vifm
+bindsym $mod+c       exec code
+
+#### LAUNCH #################
+
+# STARTUP
+exec --no-startup-id setxkbmap fr
+exec --no-startup-id unclutter --timeout 3
+exec --no-startup-id feh --bg-scale ~/Images/Wallpaper/pink_anime_girl.jpg
+
+# RELOAD
+exec_always xrandr --auto --output HDMI-1-0 --above eDP1 --auto
+exec_always --no-startup-id picom
+exec_always --no-startup-id dunst
+exec_always --no-startup-id ~/.config/polybar/launch.sh
