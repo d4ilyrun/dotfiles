@@ -1,0 +1,6 @@
+[submodule "Scripts/git-ssh"]
+	path = Install/git-ssh
+	url = git@github.com:d4ilyrun/git-ssh.git
+[submodule "Install/git-ssh"]
+	path = Install/git-ssh
+	url = git@github.com:d4ilyrun/git-ssh.git
