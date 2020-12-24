@@ -41,6 +41,16 @@ After installation, restart Firefox to see the effects.
 
 ------
 
+## Recommended Tweaks
+
+* Select the **Customize** option from the **hamburger menu** **(≡)**, and remove all items except for:
+    * Forward button
+    * Back button
+    * Downloads button
+* The new tab page extension is called **nightTab**. [You can can find it here](https://addons.mozilla.org/en-US/firefox/addon/nighttab/)
+
+------
+
 ## Customizing
 
 You can easily tweak the theme by changing the relevant CSS variables, starting with `--mff-` located within the :root section at the top of the `userChrome.css` file.
