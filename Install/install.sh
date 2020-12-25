@@ -38,7 +38,8 @@ feh --bg-scale $HOME/Images/Wallpaper/30*
 sudo cp -vi Scripts/v3lock/v3lock /bin/
 
 # Installing rofi themes
-sh $HOME/.config/rofi/install.sh
+cd $HOME/.config/rofi
+sh install.sh
 
 # Setting up fish
 curl -L http://get.oh-my.fish | fish
