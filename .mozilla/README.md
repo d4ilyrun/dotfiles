@@ -10,7 +10,7 @@
 
 ## Prerequisites
 
-* Verify that the user **stylesheets (userChrome)** option is enabled:
+* Verify that the user **stylesheets (userChrome)** option is enablehu:
   1. Go to the address `about:config` in Firefox
 
   2. Search for `toolkit.legacyUserProfileCustomizations.stylesheets`

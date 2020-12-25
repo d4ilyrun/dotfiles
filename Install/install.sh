@@ -37,21 +37,33 @@ feh --bg-scale $HOME/Images/Wallpaper/30*
 # Installing scripts
 sudo cp -vi Scripts/v3lock/v3lock /bin/
 
-# Installing firefox
-cd $MOZILLA
-sh $FIREFOX_INSTALL
-if [ $? -eq 1 ]; then
-    exit_with_error
-else
-    cp *.svg *.css $HOME/.mozilla/firefox/*.default-release/chrome/
-fi
+# Installing rofi themes
+sh $HOME/.config/rofi/install.sh
+
+# Setting up fish
+curl -L https://get.oh-my.fish | fish
+omf update
+chsh -s /usr/bin/fish # default terminal
 
 # SSH
-read -p "Do you want to set up an ssh key : [Y|y]es [N|n]o "
-case $REPLY in
-    y|Y) sh $SSH_INSTALL;;
-    n|N) echo "Installation complete!";;
-    *) echo "Invalid choice, finishing installation.";;
+clear
+read -p "Do you want to set up an ssh key : [Y|y]es [N|n]o "response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+    sh $SSH_INSTALL
+fi
+
+
+cat <<EOF
+INSTALLATION COMPLETE!
+
+[!] Run ':PlugInstall' in vim to load all required plugins.
+
+A custom version of firefox is available inside the '.dotfiles' directory.
+For further information please refer to the README file inside the directory.
+
+If you spotted any error please file an issue on the github repository :)
+EOF
 
 cd $DIR
 exit 0

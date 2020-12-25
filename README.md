@@ -23,13 +23,7 @@ FiraCode Font-Awesome siji-git ttf-unifont IPAPMincho
 
 ## Installing
 
-```
-git clone git@github.com:d4ilyrun/dotfiles.git && cd dotifles
-mkdir ~/Images && mkdir ~/Images/Screenshots
-cp * ~/ && cp -rf .config/* ~/.config
-cp -r Scripts/* /bin/
-cp -r Images/Wallpaper ~/Images/Wallpaper
-```
+`sh Install/install.sh`
 
 ## screenshots
 

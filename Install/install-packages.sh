@@ -8,37 +8,35 @@ DOT="$SCRIPTPATH/.."
 cd $DOT
 
 # installing yay helper
-YAY=`sh Install/install-yay.sh`
-if [ $YAY -eq 1 ]; then
+`sh Install/install-yay.sh`
+if [ $? -eq 1 ]; then
     exit 1
 fi
 
 # CLI
-yay --no-confirm -S\
+yay --noconfirm -S\
     fish\
     neovim\
-    neovim-plug\
     htop\
     feh\
     neofetch
 
-# oh my fish
-curl -L https://get.oh-my.fish | fish
-omf update
-omf install bobthefish
+# neovim packages
+yay --noconfirm -S neovim-plug fzf
+
 
 # GUI
-yay --no-confirm -S\
+yay --noconfirm -S\
     i3-gaps\
     i3lock-fancy\
-    picom\
+    picom-rounded-corners\
     alacritty\
     dunst\
     polybar\
     rofi
 
 # FONTS
-yay --no-confirm -S\
+yay --noconfirm -S\
     ttf-fira-code\
     ttf-font-awesome\
     siji-git\
