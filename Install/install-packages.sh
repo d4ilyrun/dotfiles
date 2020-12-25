@@ -39,10 +39,11 @@ yay --noconfirm -S\
 yay --noconfirm -S\
     ttf-fira-code\
     ttf-font-awesome\
-    siji-git\
     ttf-unifont\
-    otf-ipafont\
     ttf-ubuntu-font-family\
-    ttf-ionicons
+    ttf-icomoon-feather
+    siji-git\
+    otf-ipafont\
+    terminus-font\
 
 cd $DIR
