@@ -19,11 +19,11 @@ yay --noconfirm -S\
     neovim\
     htop\
     feh\
+    nodejs\
     neofetch
 
 # neovim packages
 yay --noconfirm -S neovim-plug fzf
-
 
 # GUI
 yay --noconfirm -S\
@@ -47,3 +47,4 @@ yay --noconfirm -S\
     terminus-font\
 
 cd $DIR
+exit 0

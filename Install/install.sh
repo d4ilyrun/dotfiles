@@ -28,7 +28,7 @@ mkdir -v ~/.config
 
 # Copying dotfiles
 mkdir -pv $HOME/.config
-cp -iv -r .config/* $HOME/.config
+cp -iv -r .config/* $HOME/.config/
 
 # Wallpaper
 cp -vi -r Images/Wallpaper $HOME/Images/Wallpaper
@@ -41,6 +41,8 @@ sudo cp -vi Scripts/v3lock/v3lock /bin/
 sh $HOME/.config/rofi/install.sh
 
 # Setting up fish
+curl -L http://get.oh-my.fish | fish
+omf install bobthefish
 chsh -s /usr/bin/fish # default terminal
 
 # SSH
@@ -50,7 +52,6 @@ if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
     sh $SSH_INSTALL
 fi
-
 
 cat <<EOF
 INSTALLATION COMPLETE!
