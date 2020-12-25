@@ -41,8 +41,6 @@ sudo cp -vi Scripts/v3lock/v3lock /bin/
 sh $HOME/.config/rofi/install.sh
 
 # Setting up fish
-curl -L https://get.oh-my.fish | fish
-omf update
 chsh -s /usr/bin/fish # default terminal
 
 # SSH
