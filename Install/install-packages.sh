@@ -39,6 +39,7 @@ yay --noconfirm -S\
 yay --noconfirm -S\
     playerctl\
     zscroll\
+    openssh\
 
 # FONTS
 yay --noconfirm -S\
