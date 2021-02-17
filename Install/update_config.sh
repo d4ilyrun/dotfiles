@@ -10,8 +10,10 @@ cd .config
 
 # copy new dotfiles
 for dir in `ls`;do
-    sudo cd -rf ~/.config/$dir .
+    sudo cp -rf ~/.config/$dir .
 done
 
 # remove potential '.git'
 find . -name .git -exec rm {} +
+
+cd $DIR
