@@ -65,10 +65,14 @@ bindsym $mod+h split h
 bindsym $mod+f fullscreen toggle
 
 # TOGGLE FLOATING
-bindsym $mod+Shift+space floating toggle; $center
+bindsym $mod+Shift+space floating toggle
 
 
 #### WORKSPACES ##############
+
+# SCREENS
+set $primary eDP-1
+set $secondary HDMI-1-1
 
 # WORKSPACES
 set $ws1 "1"
@@ -106,6 +110,10 @@ bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
+# MOVE WORKSPACE BETWEEN SCREENS
+bindsym Ctrl+$mod+Up move workspace to output $secondary
+bindsym Ctrl+$mod+Down move workspace to output $primary
+
 #### COLOR #################
 
 # XRESOURCES
@@ -130,29 +138,29 @@ for_window [class="yakuake"] floating enable
 for_window [class="systemsettings"] floating enable
 for_window [class="plasmashell"] floating enable;
 for_window [class="Plasma"] floating enable; border none
-for_window [title="plasma-desktop"] floating enable; border no    ne
+for_window [title="plasma-desktop"] floating enable; border none
 for_window [title="win7"] floating enable; border none
 for_window [class="krunner"] floating enable; border none
 for_window [class="Kmix"] floating enable; border none
 for_window [class="Klipper"] floating enable; border none
-for_window [class="Plasmoidviewer"] floating enable; border no    ne
+for_window [class="Plasmoidviewer"] floating enable; border none
 for_window [class="(?i)*nextcloud*"] floating disable
-for_window [class="plasmashell" window_type="notification"] bo    rder none, move right 700px, move down 450px
+for_window [class="plasmashell" window_type="notification"] border none, move right 700px, move down 450px
 no_focus [class="plasmashell" window_type="notification"]
  
 # killig window
-for_window [title="Desktop — Plasma"] kill; floating enable; b    order none
+for_window [title="Desktop — Plasma"] kill; floating enable; border none
 
 # i3 config
-for_window [title="Desktop — Plasma"] kill; floating enable; b    order none
+for_window [title="Desktop — Plasma"] kill; floating enable; border none
 
 #### TOOLS #################
 
 # MEDIA CONTROL
 bindsym XF86MonBrightnessUp     exec xbacklight + 20
 bindsym XF86MonBrightnessDown   exec xbacklight - 20
-bindsym XF86AudioRaiseVolume    exec pactl -- set-sink-volume 0 +10%
-bindsym XF86AudioLowerVolume    exec pactl -- set-sink-volume 0 -10%
+bindsym XF86AudioRaiseVolume    exec pactl set-sink-volume 0 +10%
+bindsym XF86AudioLowerVolume    exec pactl set-sink-volume 0 -10%
 
 # SCREENSHOT
 bindsym Print           exec scrot -e 'mv $f ~/Images/Screenshots/'
@@ -160,7 +168,7 @@ bindsym $mod+Print      exec scrot -ub -e 'mv $f ~/Images/Screenshots/'
 bindsym $mod+Shift+s    exec scrot -s -e 'mv $f ~/Images/Screenshots/'
 
 # I3 LOCK
-bindsym $mod+x          exec /bin/v3lock/v3lock
+bindsym $mod+o          exec /usr/bin/v3lock
 #bindsym $mod+o         exec i3lock-fancy -p -t "System Locked Down"
 
 # ROFI
@@ -181,10 +189,12 @@ bindsym $mod+c       exec code
 # STARTUP
 exec --no-startup-id setxkbmap fr
 exec --no-startup-id unclutter --timeout 3
-exec --no-startup-id feh --bg-scale ~/Images/Wallpaper/30*.jpg
+exec --no-startup-id sh /usr/local/bin/wifi-connect.sh
 
 # RELOAD
 exec_always xrandr --auto --output HDMI-1-0 --above eDP1 --auto
 exec_always --no-startup-id picom
 exec_always --no-startup-id dunst
-exec_always --no-startup-id ~/.config/polybar/launch.sh
+# nice wallpapers: 30 / 16 / 27
+exec_always --no-startup-id feh --bg-scale ~/Images/Wallpaper/16*.jpg
+exec_always --no-startup-id ~/.config/polybar/launch.sh --forest

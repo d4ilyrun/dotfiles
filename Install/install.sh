@@ -12,13 +12,14 @@ DOT="$SCRIPTPATH/.."
 MOZILLA="$DOT/.mozilla"
 
 PKG_INSTALL="$SCRIPTPATH/install-packages.sh"
-SSH_INSTALL="$SCRIPTPATH/git-ssh/generate-key.sh"
+SSH_INSTALL="$DOT/Scripts/git-ssh/generate-key.sh"
 FIREFOX_INSTALL="$MOZILLA/install.sh"
 
 
-`sh $PKG_INSTALL`
+#`sh $PKG_INSTALL`
 if [ $? -eq 1 ]; then
-    exit_with_error
+    #exit_with_error
+    echo error
 fi
 
 # Setting up
@@ -31,8 +32,8 @@ mkdir -pv $HOME/.config
 cp -iv -r .config/* $HOME/.config/
 
 # Wallpaper
-cp -vi -r Images/Wallpaper $HOME/Images/Wallpaper
-feh --bg-scale $HOME/Images/Wallpaper/30*
+cp -vi -r Images/Wallpaper $HOME/Images/
+feh --bg-scale $HOME/Images/Wallpaper/16*
 
 # Installing scripts
 sudo cp -vi Scripts/v3lock/v3lock /bin/

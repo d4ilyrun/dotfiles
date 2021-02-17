@@ -35,6 +35,11 @@ yay --noconfirm -S\
     polybar\
     rofi
 
+# DEPENDENCIES
+yay --noconfirm -S\
+    playerctl\
+    zscroll\
+
 # FONTS
 yay --noconfirm -S\
     ttf-fira-code\

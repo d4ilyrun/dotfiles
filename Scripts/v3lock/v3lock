@@ -1,6 +1,6 @@
 #!/bin/bash
 
-overlay=/bin/v3lock/pikachu_overlay.png
+overlay=/usr/share/v3lock/pikachu_overlay.png
 
 rm -rf /tmp/currentworkspace.png
 scrot /tmp/currentworkspace.png

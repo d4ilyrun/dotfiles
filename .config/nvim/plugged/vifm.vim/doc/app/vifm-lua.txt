@@ -1,0 +1,439 @@
+*vifm-lua.txt*    For Vifm version 1.0  Last change: 2021 Jan 30
+
+ Email for bugs and suggestions: <xaizek@posteo.net>
+
+Note: this is very much work in progress.  Everything can change up to
+complete removal of this interface (that's an unlikely scenario though).
+
+|vifm-lua-status|      Status of plugins.
+|vifm-lua-plugins|     Sample plugins.
+|vifm-lua-lua|         Generic reasoning behind this API.
+|vifm-lua-design|      Generic ideas about the design.
+|vifm-lua-loading|     Which plugins get loaded.
+|vifm-lua-libs|        What Lua libraries are available.
+|vifm-lua-api|         Root-level API.
+|vifm-l_vifm|          `vifm` global table.
+|vifm-l_vifm.cmds|     `vifm.cmds` global table.
+|vifm-l_vifm.opts|     `vifm.opts` global table.
+|vifm-l_vifm.plugins|  `vifm.plugins` global table.
+|vifm-l_vifm.sb|       `vifm.sb` global table.
+|vifm-l_VifmJob|       `VifmJob` type.
+|vifm-l_VifmView|      `VifmView` type.
+
+--------------------------------------------------------------------------------
+*vifm-lua-status*
+
+Pre-pre-alpha.  Just figuring out the basics, trying things out and shaping
+the design.  API is nowhere near being complete and there are some weird
+ideas which can significantly affect their structure.
+
+There is no manual page that corresponds to this document.  Rather significant
+changes are expected, so until things stabilize, only one version will be
+maintained.
+
+--------------------------------------------------------------------------------
+*vifm-lua-plugins*
+
+Since API is not stable at all, example plugins are stored in code repository
+of Vifm and are thus bound to corresponding revision of the application.
+
+--------------------------------------------------------------------------------
+*vifm-lua-why*
+
+Think of Lua API as a way to reach deeper into the internals of Vifm.  This
+isn't a replacement of existing functionality, but a richer way of interacting
+with the core behind it.
+
+One of the primary motivations were deficiencies in integrations with external
+applications.  Communicating results of calling them back to Vifm was
+problematic, there was simply no good way of doing it reliably.
+
+Regular :commands are a form of user-interface by design, which has various
+implications that limit their abilities.  For example, you can't reliably check
+if a command succeeded and different commands treat same arguments differently
+for the purpose of ease of use, which however makes automation harder.  When
+things like that start to get in the way, it's a good idea to reimplement
+relevant functionality in Lua.
+
+On top of that user's preferences differ and contradict each other, this can
+lead to proliferation of options to account for very fine-grained details.
+It's better to let users implement their wild and highly specific ideas on their
+own rather than trying to squeeze all possible use case into the application.
+The useful functionality developed on the side can eventually make its way to
+the code base.
+
+--------------------------------------------------------------------------------
+*vifm-lua-design*
+
+The intent is for Lua to be a way of extending the core.  It's not meant
+neither as a replacement of :commands nor as a continuation of it.  Instead
+it's supposed to be a more low-level way of interacting with the core and
+extension.
+
+One implication is that there is no way of calling Lua from :commands or vice
+versa.  This gets too ugly too quickly, hence they are separated except for
+certain well-defined extension points where Lua parts integrate with
+:commands.
+
+Therefore one should think of :commands as a user-facing interface and Lua
+part as an internal extension language with wider range of possibilities.
+
+The API is synchronous.  Asynchronous API has some inherent issues due to
+invariant invalidation (by the time callback is executed everything might have
+changed), which is quite dangerous when dealing with file systems.  That said,
+some safe version of asynchronous execution might be made available if safe
+way of implementing it exists (need to sandbox callbacks somehow).  All
+callback-based mechanisms are susceptible to this issue, but asynchronous API
+makes it much worse because these callbacks are created all the time.
+
+--------------------------------------------------------------------------------
+*vifm-lua-loading*
+
+There are two lists of plugins that affect plugin loading: whitelist and
+blacklist.  Here's how they function:
+ 1. If whitelist isn't empty, only plugins in the list can be loaded.  Trying to
+    load any other plugin fails.  Contents of blacklist is ignored.
+ 2. If whitelist is empty and blacklist isn't, loading anything that's not in
+    the blacklist is allowed.
+
+The whitelist is meant to help testing plugins in isolation for debugging
+purposes.
+
+The blacklist can be used to temporarily disable broken or just unused plugins
+as well as for debugging.
+
+--------------------------------------------------------------------------------
+*vifm-lua-libs*
+
+The following standard libraries are enabled:
+ * basic
+ * table manipulation
+ * string manipulation
+ * input and output
+ * mathematical functions
+
+--------------------------------------------------------------------------------
+*vifm-plugins*
+
+After processing of |vifm-vifmrc| contents of the $VIFM/plugins/ directory is
+enumerated in search of plugins.  Directories or symbolic links to directories
+are considered as candidates.
+
+Implications of the (current) order of initialization:
+ * :commands defined in configuration have precedence over :commands defined by
+   plugins
+ * :commands from plugins can't be used during startup
+
+All plugins are required to contain `init.lua` file at their root.  This file
+gets processed and its return value is interpreted as plugin data.  The return
+value must be a table.  The table is stored in a `vifm.plugins.all` dictionary
+with a key that corresponds to the plugin's name.  At the moment the name of a
+plugin is the name of its directory.
+
+Global variables created by one plugin are local to that plugin and won't
+affect or be visible to other plugins.
+
+--------------------------------------------------------------------------------
+*vifm-lua-api*
+
+Builtin `print()` function puts messages to plugin's log (see |vifm-:plugins|
+menu).
+
+All API calls can raise errors on generic internal issues or when argument
+are missing or have wrong type, table keys are missing or have wrong type.
+
+Interaction with the host happens through `vifm` global table.  See |vifm-l_vifm|.
+
+Some ideas~
+
+Use camelCase?
+Use tables more often?  Supposed to be more extensible.
+Make "description" a mandatory argument?
+
+Add VifmJob:succeeded() ?
+Add VifmJob:haserrors() ?
+
+Map options to arrays when possible, like for set options ?
+Forbid use of option abbreviations ?
+Technically options are also part of user-interface and maybe shouldn't be
+exposed in this way.
+
+--------------------------------------------------------------------------------
+*vifm-l_vifm*
+
+Global `vifm` table is the entry-point to the API.
+
+vifm.cmds
+Table for managing command-line commands.  See |vifm-l_vifm.cmds|.
+
+vifm.opts
+Table for managing options.  See |vifm-l_vifm.opts|.
+
+vifm.plugins
+Table for managing plugins.  See |vifm-l_vifm.plugins|.
+
+vifm.sb
+Table for managing statusbar.  See |vifm-l_vifm.sb|.
+
+vifm.currview({path})                          *vifm-l_vifm.currview()*
+Retrives a reference to current view.
+
+Return:~
+  Returns an instance of |vifm-l_VifmView|.
+
+vifm.errordialog({title}, {msg})               *vifm-l_vifm.errordialog()*
+Displays error dialog.
+
+Parameters:~
+  {title}  Title of the dialog.
+  {msg}    Contents of the dialog.
+
+vifm.expand({str})                             *vifm-l_vifm.expand()*
+Expands environment variables and macros in a string.
+
+Parameters:~
+  {str}  String to expand.
+
+Return:~
+  Expanded string.
+
+vifm.fnamemodify({path}, {mods}[, {base}])     *vifm-l_vifm.fnamemodify()*
+Changes path according to modifiers.
+
+Parameters:~
+  {path}  Path to modify.
+  {mods}  Modifiers to apply (`:p`, `:t`, etc.).
+  {base}  Base directory for relative paths.
+          Default: path of active pane.
+
+Return:~
+  Modified path.
+
+vifm.exists({path})                            *vifm-l_vifm.exists()*
+Checks existence of a path without resolving symbolic links.
+
+Parameters:~
+  {path}  Path to check.
+
+Return:~
+  `true` if path exists.
+
+vifm.makepath({path})                          *vifm-l_vifm.makepath()*
+Creates target path and missing intermediate directories.
+
+Parameters:~
+  {path}  Path to create.
+
+Return:~
+  `true` on success.  Trying to create path that already exists is not
+  considered to be an error.
+
+vifm.startjob({job})                           *vifm-l_vifm.startjob()*
+Launches an external command.  Returns without waiting for it to finish.
+
+Command is dispatched via a shell, but |vifm-'shellcmdflag'| is always
+ignored.
+
+Possible fields of {job}:
+ - "cmd" (string)
+   Comand to execute.
+ - "description" (string) (default: "")
+   Description of the job to be displayed on the job bar (when "visible" key
+   is set to true).
+ - "mergestreams" (boolean) (default: false)
+   Whether to merge error streams of the command with output stream.
+ - "visible" (boolean) (default: false)
+   Whether to show this job on a job bar.
+
+Parameters:~
+  {job}  Table with information about a job.
+
+Return:~
+  Returns an instance of |vifm-l_VifmJob|.
+
+--------------------------------------------------------------------------------
+*vifm-l_vifm.cmds*
+
+vifm.cmds.add({cmd})                           *vifm-l_vifm.cmds.add()*
+Registers a new :command of a kind that's equivalent to builtin commands.
+
+Possible fields of {cmd}:
+ - "name" (string)
+   Name of the command.
+ - "description" (string) (default: "")
+   Description of the command.
+ - "handler" (function)
+   Handler which accepts {info}.
+ - "complete" (function)
+   Completion function which accepts {info} and returns {results}.
+ - "minargs" (integer) (default: 0)
+   Minimal number of arguments.
+ - "maxargs" (integer) (default: minargs)
+   Maximal number of arguments.  Negative number means "indefinite".
+
+Fields of {info} argument for "handler":
+ - "args" (string)
+   All arguments passed to the command.
+
+Fields of {info} argument for "complete":
+ - "arg" (string)
+   Argument being completed.
+ - "args" (string)
+   Command-line up to cursor position (for cases when completion depends on
+   what comes before current argument).
+
+Fields of {results} return value of "complete":
+ - "offset" (integer) (default: 0)
+   Offset from beginning of the argument.  This is useful to avoid prepending
+   prefix that's common to all matches, thus completing only essential part.
+   For example, in case of "var=val" use offset=4 to complete part after "=".
+ - "matches" (table)
+   List of matches in values of the table (keys are ignored).
+
+Parameters:~
+  {cmd}  Table with information about a command.
+
+Return:~
+  `true` on success.
+
+vifm.cmds.command({cmd})                       *vifm-l_vifm.cmds.command()*
+Registers a new :command that works exactly as those registered using
+|vifm-:command| builtin command.
+
+Possible fields of {cmd}:
+ - "name" (string)
+   Name of the command.
+ - "description" (string) (default: action)
+   Description of the command.
+ - "action" (string)
+   Value of the command.  See |vifm-:command| for possible value.
+
+Parameters:~
+  {cmd}  Table with information about a command.
+
+Return:~
+  `true` on success.
+
+vifm.cmds.delcommand({name})                   *vifm-l_vifm.cmds.delcommand()*
+Removes :command added by `vifm.cmds.command()`, basically being an equivalent
+of |vifm-:delcommand| builtin command.
+
+Parameters:~
+  {name}  Name of the command.
+
+Return:~
+  `true` on success.
+
+--------------------------------------------------------------------------------
+*vifm-l_vifm.opts*
+
+This global `vifm.opts` table groups items related to options in general.
+
+opts.global                                    *vifm-l_vifm.opts.global*
+Table that provides access to global options.  The mapping between option
+types and Lua types is quite obvious:
+ - boolean option   -> boolean type
+ - integer option   -> number type
+ - any other option -> string type
+ - bad option       -> nil type
+
+--------------------------------------------------------------------------------
+*vifm-l_vifm.plugins*
+
+This global `vifm.plugins` table groups items related to plugins.
+
+plugins.all                                    *vifm-l_vifm.plugins.all*
+Table that contains all plugins indexed by their names.
+
+--------------------------------------------------------------------------------
+*vifm-l_vifm.sb*
+
+This global `vifm.sb` table groups functions for managing status bar.  It
+contains the following items:
+
+sb.info({msg})                                 *vifm-l_vifm.sb.info()*
+Displays a regular message on statusbar.
+
+Parameters:~
+  {msg}  Message to display.
+
+sb.error({msg})                                *vifm-l_vifm.sb.error()*
+Displays an error message on statusbar.
+
+Parameters:~
+  {msg}  Message to display.
+
+sb.quick({msg})                                *vifm-l_vifm.sb.quick()*
+Displays a quick message on statusbar.  It's discarded on first redraw and
+isn't stored in the history of messages.
+
+Parameters:~
+  {msg}  Message to display.
+
+--------------------------------------------------------------------------------
+*vifm-l_VifmJob*
+
+Instances of this type are returned by  |vifm-l_vifm.startjob()|.
+
+VifmJob:wait()                                 *vifm-l_VifmJob:wait()*
+Waits for the job to finish.
+
+Raises an error:~
+  If waiting has failed.
+
+VifmJob:exitcode()                             *vifm-l_VifmJob:exitcode()*
+Retrieves exit code of the application.
+
+Waits for the job to finish.
+
+Return:~
+  Returns an integer number that represents exit code.  The value is `-x` if
+  the application was killed by signal `x`.  `-127` or `-128` means that
+  tracking the application has failed in some way.
+
+Raises an error:~
+  If waiting has failed.
+
+VifmJob:stdout()                               *vifm-l_VifmJob:stdout()*
+Retrieves stream associated with standard output of a job.  Includes error
+stream if `mergestreams` was set to `true`.
+
+Return:~
+  Returns file stream from standard I/O library of Lua.
+
+VifmJob:errors()                               *vifm-l_VifmJob:errors()*
+Retrieves data collected from error stream of the job.  It's accumulated
+automatically in background and contains all data collected so far, the call
+doesn't wait for arrival of data.  Empty if `mergestreams` was set to `true`.
+
+Return:~
+  Returns a string.
+
+--------------------------------------------------------------------------------
+*vifm-l_VifmView*
+
+Instances of this type are returned by |vifm-l_vifm.currview()|.
+
+The corresponding view exists independently of this type and once the view is
+gone (e.g., its tab is closed) accessing bound instance raises an error.
+
+VifmView.locopts                               *vifm-l_VifmView.viewopts*
+Equivalent of |vifm-l_vifm.opts.global| for location-specific values of
+view-specific options.  These are "local" values of view-specific options,
+which are reset to "global" ones on file list change.
+
+VifmView.viewopts                              *vifm-l_VifmView.locopts*
+Equivalent of |vifm-l_vifm.opts.global| for view-specific options, see there
+for details.  These are "global" values of view-specific options.
+
+VifmView:cd({path})                            *vifm-l_VifmView:cd()*
+Changes location of the view.  {path} isn't expanded in any way.
+
+Parameters:~
+  {path}  Path to visit.
+
+Return:~
+  `true` on success.
+
+--------------------------------------------------------------------------------
+ vim:tw=78:fo=tcq2:isk=!-~,^*,^\|,^\":ts=8:ft=help:norl:

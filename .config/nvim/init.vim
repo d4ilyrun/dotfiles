@@ -7,7 +7,6 @@ call plug#begin()
 " StatusBar
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"Plug 'itchyny/lightline.vim'
 
 " Navigation
 Plug 'scrooloose/nerdtree'
@@ -20,20 +19,23 @@ Plug 'jiangmiao/auto-pairs'	 	" Auto close brackets etc
 
 " Colors
 Plug 'ap/vim-css-color'    " Color previewer
-Plug 'dikiaap/minimalist'
 Plug 'sainnhe/sonokai'
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""
 " => Settings
 """""""""""""""""""""""""""""""""""""""
-let mapleader = ","			  " Leader key
+let mapleader = ","			    " Leader key
 set clipboard=unnamedplus
-set number relativenumber		  " Line numbering
+set number relativenumber		" Line numbering
+set nohlsearch                  " No highlight
+set ignorecase                  " Case Insensitive search
+set smartcase
+set nobackup                    " No backup files
 
-
-""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""
 " => File explorer   
 """""""""""""""""""""""""""""""""""""""
 :nnoremap <C-e> :NERDTree<CR>
@@ -74,8 +76,9 @@ nnoremap <Leader>ve :e $MYVIMRC<CR>			" edit
 nnoremap <Leader>vr :source $MYVIMRC<CR>	" reload
 
 " tabs
-nnoremap <C-t><BS> :tabc<CR>    " close tab
-nnoremap <C-t><up> :tabr<CR>    " first tab
-nnoremap <C-t><down> :tabl<CR>  " last tab
-nnoremap <C-t><left> :tabp<CR>  " previous tab
+nnoremap <C-t><BS>   :tabc<CR>      " close tab
+nnoremap <C-t><C-t>  :tabnew<CR>    " new tab  
+nnoremap <C-t><up>   :tabr<CR>      " first tab
+nnoremap <C-t><down> :tabl<CR>      " last tab
+nnoremap <C-t><left> :tabp<CR>      " previous tab
 nnoremap <C-t><right> :tabn<CR> " next tab

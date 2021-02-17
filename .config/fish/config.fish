@@ -2,13 +2,25 @@
 
 setxkbmap fr
 
+set -x PATH "$HOME/bin:$PATH"
+set -x EDITOR nvim
+set -x VISUAL nvim
+set -x TERM alacritty
+
+### SCRIPTS ###
+
+alias wlink="sh /usr/local/bin/wifi-connect.sh"
+
 ### ALIASES ###
 
-# vim
+# see disk space left
+alias dspace="df -H | grep -e Filesystem -e sdb"
+
+# vim redirection
 alias vim="nvim"
+alias vi="nvim"
 
 # tree and ls
-alias treea="tree -a -I '.git'"
 alias ll="ls -l"
 alias la="ls -a"
 alias lla="ls -al"
@@ -36,7 +48,15 @@ alias cp="cp -iv"
 alias mv='mv -iv'
 alias rm='rm -iv'
 
+# create parent directories if needed
 alias mkdir='mkdir -pv'
+
+# git
+alias g="git"
+alias gs="git status"
+alias gc="git commit"
+alias gd="git diff"
+alias gtree="tree -a -I '.git'"
 
 ### STARFISH ###
 #starfish init fish | source
