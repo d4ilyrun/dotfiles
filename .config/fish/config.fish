@@ -20,6 +20,10 @@ alias dspace="df -H | grep -e Filesystem -e sdb"
 alias vim="nvim"
 alias vi="nvim"
 
+# tar helper
+alias untar="tar -xvf"
+alias ltar="tar -tvf"
+
 # tree and ls
 alias ll="ls -l"
 alias la="ls -a"
